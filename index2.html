@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ky" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduPlatform - Онлайн Окуу Системасы</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<base target="_blank">
+</head>
+<body>
+
+  <!-- ===== MAIN SITE ===== -->
+  <div id="mainSite">
+    <!-- HEADER -->
+    <header>
+      <div class="container navbar">
+        <div class="logo">🎓 EduPlatform</div>
+
+        <nav class="nav-links" id="navLinks">
+          <a href="#home">🏠 Башкы бет</a>
+          <a href="#courses">📚 Курстар</a>
+          <a href="#reviews-section">💬 Пикир</a>
+          <a href="#" id="adminLink" style="display:none;">⚙️ Админ</a>
+        </nav>
+
+        <div class="nav-actions" id="navActions">
+          <button class="theme-toggle" id="themeToggle" title="Тема">🌙</button>
+          <button class="btn btn-outline" id="loginBtn">🔑 Кирүү</button>
+          <button class="btn btn-primary" id="registerBtn">📝 Катталуу</button>
+          <button class="btn btn-outline" id="logoutBtn" style="display:none;">🚪 Чыгуу</button>
+          <span id="userBadge" style="display:none; font-weight:700; color:var(--primary); cursor:pointer;"></span>
+        </div>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Меню">☰</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section id="home" class="hero">
+        <div class="container">
+          <h1 class="fade-in">Келечегиңизди бүгүн баштаңыз 🚀</h1>
+          <p class="fade-in">Заманбап онлайн окуу платформасы. Мугалимдер жана студенттер үчүн ыңгайлуу, тез жана натыйжалуу.</p>
+          <div class="hero-buttons fade-in">
+            <button class="btn btn-primary" onclick="scrollToCourses()">📚 Курстарды карап чыгуу</button>
+            <button class="btn btn-outline" onclick="openModal('authModal')">👤 Катталуу</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- COURSES -->
+      <section id="courses">
+        <div class="container">
+          <div class="section-title">
+            <h2>📖 Бардык курстар</h2>
+            <p>Өзүңүзгө ылайыктуу багытты тандап, окууну баштаңыз</p>
+          </div>
+          <div class="category-filters" id="categoryFilters"></div>
+          <div class="courses-grid" id="coursesGrid"></div>
+        </div>
+      </section>
+
+      <!-- REVIEWS -->
+      <section id="reviews-section" style="padding: 60px 0; background: var(--bg); overflow: hidden;">
+        <div class="container">
+          <div class="review-form-container" style="max-width: 700px; margin: 0 auto 50px; background: var(--bg-card); padding: 30px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--border);">
+            <div class="section-title">
+              <h2>✍️ Пикир калтыруу</h2>
+              <p>Өз оюңузду бөлүшүп, бизди баалаңыз</p>
+            </div>
+
+            <form id="newReviewForm">
+              <div class="form-row" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 15px;">
+                  <label style="display:block; margin-bottom:8px; font-weight:600;">Сиздин атыңыз</label>
+                  <input type="text" id="rName" placeholder="Мисалы: Айбек" required style="width:100%; padding:12px; border:2px solid var(--border); border-radius:12px; background:var(--bg); color:var(--text);">
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 15px;">
+                  <label style="display:block; margin-bottom:8px; font-weight:600;">Ролуңуз</label>
+                  <input type="text" id="rRole" placeholder="Мисалы: Студент" required style="width:100%; padding:12px; border:2px solid var(--border); border-radius:12px; background:var(--bg); color:var(--text);">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Баалоо</label>
+                <div class="star-rating-input" id="starInput" style="display:flex; gap:10px; font-size:2rem; cursor:pointer; color:#ddd;">
+                  <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
+                </div>
+                <input type="hidden" id="rRating" value="0">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Пикириңиз</label>
+                <textarea id="rText" rows="3" placeholder="Платформа жөнүндө оюңуз..." required style="width:100%; padding:12px; border:2px solid var(--border); border-radius:12px; background:var(--bg); color:var(--text); resize:none;"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%;">🚀 Пикирди жарыялоо</button>
+            </form>
+          </div>
+
+          <div class="section-title">
+            <h2>💬 Акыркы пикирлер</h2>
+          </div>
+
+          <div class="slider-wrapper" style="width: 100%; overflow: hidden; position: relative; padding: 20px 0; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+            <div class="slider-track" id="liveReviewTrack" style="display: flex; gap: 25px; width: max-content;">
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h4>🎓 EduPlatform</h4>
+            <p>Сапаттуу билимге жеткиликтүү жол. 24/7 колдоо, сертифицикацияланган мугалимдер.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Меню</h4>
+            <ul>
+              <li><a href="#home">Башкы бет</a></li>
+              <li><a href="#courses">Курстар</a></li>
+              <li><a href="#reviews-section">Пикир</a></li>
+              <li><a href="#" onclick="openModal('authModal')">Катталуу</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Байланыш</h4>
+            <ul>
+              <li>📧 support@eduplatform.kg</li>
+              <li>📞 +996 (555) 123-456</li>
+              <li>📍 Бишкек, Кыргызстан</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © 2026 EduPlatform. Бардык укуктар корголгон.
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ===== FULL DASHBOARD ===== -->
+  <div id="fullDashboard" class="full-dash" style="display: none;">
+    <aside class="dash-sidebar">
+      <div class="dash-logo">
+        <i class="fas fa-graduation-cap"></i> EduPlatform
+      </div>
+      <nav class="dash-nav" id="dashNav">
+        <!-- Dynamic menu items will be inserted here -->
+      </nav>
+      <div class="dash-user-info">
+        <div class="dash-avatar" id="dashAvatar">A</div>
+        <div class="dash-user-details">
+          <div id="dashUserName">Аты</div>
+          <span id="dashRoleBadge">Рол</span>
+        </div>
+      </div>
+      <a href="#" onclick="exitDashboard()" class="exit-link">
+        <i class="fas fa-arrow-left"></i> Сайтка кайтуу
+      </a>
+    </aside>
+
+    <main class="dash-main">
+      <header class="dash-main-header">
+        <h2 id="dashGreeting">Салам!</h2>
+        <div class="header-actions">
+          <button class="theme-toggle" id="dashThemeToggle" title="Тема">🌙</button>
+          <button class="btn btn-outline" onclick="handleLogout()">🚪 Чыгуу</button>
+        </div>
+      </header>
+
+      <div class="dash-stats-grid" id="dashStats"></div>
+
+      <div class="dash-body" id="dashBodyArea">
+        <!-- Dynamic content -->
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== MODALS ===== -->
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('authModal')" aria-label="Жабуу">✕</button>
+      <h2 style="margin-bottom:20px;">👤 Аккаунт</h2>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="login">🔑 Кирүү</button>
+        <button class="tab-btn" data-tab="register">📝 Катталуу</button>
+      </div>
+
+      <!-- Login Tab -->
+      <div class="tab-content active" id="loginTab">
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" required placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label>Сырсөз</label>
+            <input type="password" id="loginPass" required placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">🔓 Кирүү</button>
+        </form>
+      </div>
+
+      <!-- Register Tab -->
+      <div class="tab-content" id="registerTab">
+        <p style="text-align:center; margin-bottom:15px; color:var(--text-muted);">Ким катары катталасыз?</p>
+        <div class="role-cards">
+          <div class="role-card" data-role="student" onclick="selectRole('student')">
+            <i class="fas fa-user-graduate"></i>
+            <h3>👨‍🎓 Студент</h3>
+            <p>Курстарга катталып, билим алыңыз</p>
+          </div>
+          <div class="role-card" data-role="teacher" onclick="selectRole('teacher')">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h3>👨‍🏫 Мугалим</h3>
+            <p>Курс түзүп, окутуңуз</p>
+          </div>
+        </div>
+
+        <!-- Student Form -->
+        <form id="studentRegisterForm" class="auth-form" style="display:none; margin-top:20px;">
+          <div class="form-group"><label>Аты-жөнү *</label><input type="text" id="sName" required></div>
+          <div class="form-group"><label>Email *</label><input type="email" id="sEmail" required></div>
+          <div class="form-group"><label>Сырсөз *</label><input type="password" id="sPass" required minlength="6"></div>
+          <div class="form-group"><label>Телефон</label><input type="tel" id="sPhone" placeholder="+996 ___ ___ ___"></div>
+          <div class="form-group"><label>Туулган күнү</label><input type="date" id="sBirthdate"></div>
+          <div class="form-group"><label>Билими</label>
+            <select id="sEducation">
+              <option value="">Тандаңыз</option>
+              <option value="school">Мектеп</option>
+              <option value="college">Колледж</option>
+              <option value="bachelor">Бакалавр</option>
+              <option value="master">Магистратура</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">📝 Студент катары катталуу</button>
+        </form>
+
+        <!-- Teacher Form -->
+        <form id="teacherRegisterForm" class="auth-form" style="display:none; margin-top:20px;">
+          <div class="form-group"><label>Аты-жөнү *</label><input type="text" id="tName" required></div>
+          <div class="form-group"><label>Email *</label><input type="email" id="tEmail" required></div>
+          <div class="form-group"><label>Сырсөз *</label><input type="password" id="tPass" required minlength="6"></div>
+          <div class="form-group"><label>Адистиги *</label><input type="text" id="tSpecialty" required placeholder="Мисалы: Программалоо"></div>
+          <div class="form-group"><label>Иш тажрыйбасы (жыл) *</label><input type="number" id="tExp" min="0" required></div>
+          <div class="form-group"><label>Билими</label>
+            <select id="tEducation">
+              <option value="">Тандаңыз</option>
+              <option value="bachelor">Бакалавр</option>
+              <option value="master">Магистратура</option>
+              <option value="phd">PhD</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Өзү жөнүндө кыскача</label><textarea id="tBio" rows="2" placeholder="Өзүңүз жөнүндө кыскача маалымат..."></textarea></div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">📝 Мугалим катары катталуу</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Info Modal -->
+  <div class="modal-overlay course-info-modal" id="courseModal">
+    <div class="modal modal-large">
+      <button class="modal-close" onclick="closeModal('courseModal')">✕</button>
+      <h2 id="cmTitle">Курс жөнүндө</h2>
+      <div class="course-details" id="cmDetails"></div>
+      <button class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="enrollCourse()">📚 Курска жазылуу</button>
+    </div>
+  </div>
+
+  <!-- Add Course Modal (Teacher) -->
+  <div class="modal-overlay" id="addCourseModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('addCourseModal')">✕</button>
+      <h2>➕ Жаңы курс кошуу</h2>
+      <form id="addCourseForm">
+        <div class="form-group"><label>Курс аталышы *</label><input type="text" id="newCTitle" required></div>
+        <div class="form-group"><label>Категория *</label>
+          <select id="newCCat" required>
+            <option value="">Тандаңыз</option>
+            <option value="Программалоо">Программалоо</option>
+            <option value="Дизайн">Дизайн</option>
+            <option value="Тилдер">Тилдер</option>
+            <option value="Маркетинг">Маркетинг</option>
+            <option value="Технология">Технология</option>
+            <option value="Бизнес">Бизнес</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Узактыгы *</label><input type="text" id="newCTime" placeholder="Мисалы: 8 жума" required></div>
+        <div class="form-group"><label>Сабактардын саны *</label><input type="number" id="newCLessons" min="1" value="20" required></div>
+        <div class="form-group"><label>Баасы (сом) *</label><input type="number" id="newCPrice" min="0" required></div>
+        <div class="form-group"><label>Сүрөттөмө *</label><textarea id="newCDesc" rows="3" required></textarea></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">💾 Сактоо</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('editProfileModal')">✕</button>
+      <h2>✏️ Профильди түзөтүү</h2>
+      <form id="editProfileForm">
+        <div id="editProfileFields"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:15px;">💾 Сактоо</button>
+      </form>
+    </div>
+  </div>
+  
+
+  <script src="script.js"></script>
+</body>
+</html>
